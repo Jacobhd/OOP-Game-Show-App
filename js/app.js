@@ -17,7 +17,7 @@ start.addEventListener("click", () => {
   game.startGame();
 });
 
-keyboardButtons.addEventListener("keyup", event => {});
+keyboardButtons.addEventListener("keydown", event => {});
 
 
 

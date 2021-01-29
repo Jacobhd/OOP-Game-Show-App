@@ -21,34 +21,46 @@ class Game {
       new Phrase('To boldly go where no one has gone before')];
     return phrase;
   }
-  // Selects random phrase from phrases property, returns Phrase object chosen to be used
+  // Selects random phrase from phrases property, returns Phrase object to be used
   getRandomPhrase() {
     return this.phrase[Math.floor(Math.random() * this.phrase.length)];
   }
   // Begins game by hiding start screen, selecting a random phrase and displaying it to user
   startGame() {
-    const overlay = document.querySelector('#overlay');
-    overlay.style.display = 'none'; // hides the start screen when clicked
-    this.activePhrase = this.getRandomPhrase(); // returns random phrase
+    const overlay = document.querySelector('#overlay'); // selectElement method?
+    overlay.style.display = 'none'; // Hides the start screen when clicked
+    this.activePhrase = this.getRandomPhrase(); // returns randomPhrase as activePhrase
     this.activePhrase.addPhraseToDisplay();
   }
-  // Handles all user interaction and functionality of app
+  // Handles user interaction and functionality of app
   handleInteraction() {
-
 
   }
   // Checks for winning move - returns boolean true if won, false if game wasn't won
+  // Checks if player has revealed all of the letters in the active phrase
   checkForWin() {
-
+    const show = document.querySelectorAll(".show");
+    const letters = document.querySelectorAll(".letter");
+    if (show.length === letters.length) {
+      return true;
+    } else {
+      return false;
+    }
   }
   // Increases value of 'missed' property, removes a life from scoreboard
   // Checks if player has remaining lives and ends game if not.
   removeLife() {
-
+    //variable to store image
+    //this.missed +1
+    // if = 5 gameOver()
   }
   // Displays game over message
+  // Applies `.start` CSS class with either `.win` or `.lose` CSS class
   gameOver(gameWon) { // boolean of Whether or not the user won the game
-
+    //overlay.style.display = 'block';
+    //displays original start screen with outcome of game
+    //updates overlay with `h1` element friendly win or loss message
+    //replaces overlay's `.start` CSS class with either `win` or `lose` CSS class
   }
 
 }
@@ -75,16 +87,19 @@ calls addPhraseToDisplay() on active phrase
 
 getRandomPhrase: randomly retrieves one phrase from the 'phrases' array
 
-handleInteraction: if phrase does not inclue guessed letter, apply `wrong` class to selected letter's button and `removeLife()` is called
+handleInteraction: Checks if button clicked matches letter in phrase = correct or incorrect guess
+disable selected letter's onscreen keyboard button
+if phrase does not inclue guessed letter,
+apply `wrong` class to selected letter's button and `removeLife()` is called
 for correct letter guess, `chose` class added to selected button.
 `showMatchedLetter()` is called on phrase, and call `checkForWin()`
 If player has won the game, call gameOver() method
 
-checkForWin: Checks if player has revealed all of the letters in the active phrase
-
 removeLife: Removes a life from the scoreboard (one of the `liveHeart.png` images
 is replaced with a `lostHeart.png` image), increments the
 `missed` property, and if the player has lost the game calls the `gameOver()` method
+
+checkForWin: Checks if player has revealed all of the letters in the active phrase
 
 gameOver: Displays final "win" or "loss" message by showing the original start screen
 overlay styled with either the `win` or `lose` CSS class
