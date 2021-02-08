@@ -14,7 +14,7 @@ class Phrase {
       let placeHolder = document.createElement('li');
       let letter = this.phrase[i]; // [i] = letters of phrase
       if (letter === ' ') { // Gives class names to spaces and letters accordingly
-        placeHolder.className = 'space'; // .space CSS class
+        placeHolder.className = 'space';
       } else {
         placeHolder.className = `hide letter ${letter}`;
       }

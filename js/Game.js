@@ -24,43 +24,76 @@ class Game {
   // Selects random phrase from phrases property, returns Phrase object to be used
   getRandomPhrase() {
     return this.phrase[Math.floor(Math.random() * this.phrase.length)];
+    // const randomPhrase = this.phrases[randomIndex];
+    // const activePhrase = new Phrase(randomPhrase);
+    // return activePhrase;
   }
   // Begins game by hiding start screen, selecting a random phrase and displaying it to user
   startGame() {
-    const overlay = document.querySelector('#overlay'); // selectElement method?
-    overlay.style.display = 'none'; // Hides the start screen when clicked
+    document.querySelector('#overlay').style.display = 'none'; // selectElement method?
+    // Hides the start screen when clicked
     this.activePhrase = this.getRandomPhrase(); // returns randomPhrase as activePhrase
     this.activePhrase.addPhraseToDisplay();
+    // return true;
   }
   // Handles user interaction and functionality of app
-  handleInteraction() {
-
+  // Checks to see if the button clicked matches a letter in the phrase
+  handleInteraction(button) {
+    let letter = button.textContent; // Letter chosen
+    // If letter is in phrase, disable, show, and checkForWin
+    if (this.activePhrase.checkLetter(letter)) {
+      this.activePhrase.showMatchedLetter(letter); // Show all matching letters
+      button.classList.add("chosen"); // Label `chosen`
+      button.setAttribute("disabled", true); // Disable chosen letter
+      // If checkForWin is true, display `win`
+      if (this.checkForWin()) {
+        this.gameOver(true);
+      }
+      // else set `wrong` class, disable letter, and removeLife
+      } else {
+        button.classList.add("wrong");
+        button.setAttribute("disabled", true);
+        this.removeLife();
+    }
   }
   // Checks for winning move - returns boolean true if won, false if game wasn't won
   // Checks if player has revealed all of the letters in the active phrase
   checkForWin() {
-    const show = document.querySelectorAll(".show");
-    const letters = document.querySelectorAll(".letter");
-    if (show.length === letters.length) {
+    const hidden = document.querySelectorAll('.hide');
+    // return !hidden.length;
+    if (!hidden.length) {
       return true;
+      //this.gameOver(true);
     } else {
       return false;
+      //this.gameOver(false);
     }
   }
   // Increases value of 'missed' property, removes a life from scoreboard
+  // One of the `liveHeart.png` images is replaced with a `lostHeart.png` image
   // Checks if player has remaining lives and ends game if not.
   removeLife() {
-    //variable to store image
-    //this.missed +1
-    // if = 5 gameOver()
+    const heart = document.querySelectorAll('.tries img'); // Variable to store image
+    heart[this.missed].src = 'images/lostHeart.png';
+    this.missed += 1;
+    if (this.missed === 5) { // If missed 5, gameover
+      this.gameOver(false);
+    }
   }
   // Displays game over message
   // Applies `.start` CSS class with either `.win` or `.lose` CSS class
   gameOver(gameWon) { // boolean of Whether or not the user won the game
-    //overlay.style.display = 'block';
-    //displays original start screen with outcome of game
-    //updates overlay with `h1` element friendly win or loss message
-    //replaces overlay's `.start` CSS class with either `win` or `lose` CSS class
+    document.querySelector('#overlay').style.display = ''; // Start screen
+    const gameOver = document.getElementById("game-over-message");
+    // Displays original start screen with outcome of game
+    if (gameWon === true) { // Updates overlay with `h1` element friendly win or loss message
+      overlay.className = "win";
+      gameOver.innerHTML = "Great Job, You Won!";
+    } else {
+      overlay.className = "lose";
+      gameOver.innerHTML = "Sorry, better luck next time!";
+    }
+    //reset();
   }
 
 }
@@ -103,5 +136,11 @@ checkForWin: Checks if player has revealed all of the letters in the active phra
 
 gameOver: Displays final "win" or "loss" message by showing the original start screen
 overlay styled with either the `win` or `lose` CSS class
+
+gameReset: After game is completed, reset gameboard by clicking "Start Game" button.
+Loads a new game, removes all `li` elements from Prase `ul` element. Reset all heart images.
+Enable all onscreen buttons and update each to use `key` CSS class
+
+
 
 */
