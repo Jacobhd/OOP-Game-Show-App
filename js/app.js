@@ -17,3 +17,13 @@ document.querySelector("#qwerty").addEventListener('click', (event) => {
     game.handleInteraction(event.target);
   }
 });
+
+// Global listener for `keydown` events from user's physical keyboard
+document.addEventListener('keydown', event => {
+  document.querySelectorAll('.key').forEach(button => { // selects all `key` class values and associates them to button's string values
+    // if button's string value equals event's `key` value and the letter is enabled, pass to handleInteraction() method
+    if (button.textContent === event.key && button.disabled === false) {
+      game.handleInteraction(button);
+    }
+  });
+});

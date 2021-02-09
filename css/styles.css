@@ -4,8 +4,8 @@
 /* Variables */
 
 :root {
-  --color-win: #78CF82;
-  --color-lose: #D94545;
+  --color-win: #001f3f;
+  --color-lose: #3a3f58;
   --color-start: #5b85b7;
   --color-neutral: #445069;
   --color-neutral-light: #D2D2D2;
@@ -28,6 +28,7 @@ body {
   flex-direction: column;
   display: flex;
   height: 100vh;
+  background: #001f3f;
 }
 
 li, ol, ul {
@@ -43,6 +44,7 @@ h2 {
 }
 
 h1 {
+  color: gold;
   font-size: 30px;
 }
 
@@ -61,6 +63,7 @@ button {
 }
 
 #btn__reset {
+  background-color: gold;
 	width: 200px;
 	margin: 0 auto;
 }
@@ -86,7 +89,7 @@ button {
 /* Title */
 
 .header {
-  color: #3a3f58;
+  color: gold;
 }
 
 
@@ -111,7 +114,7 @@ button {
 
 .show {
   color: #fff;
-  background-color: #4ac0d5;
+  background-color: #004E7C;
   font-size: 20px;
   height: 65px;
   width: 65px;
@@ -176,7 +179,7 @@ button {
 }
 
 .title {
-  color: #FFF;
+  color: gold;
 }
 
 .start {
@@ -196,7 +199,7 @@ button {
 }
 
 .lose {
-  background-color: #f5785f;
+  background-color: var(--color-lose);
 }
 
 .lose a {
