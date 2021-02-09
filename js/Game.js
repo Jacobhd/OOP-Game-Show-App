@@ -2,145 +2,110 @@
  * Project 4 - OOP Game App
  * Game.js */
 
- // Create Game class methods for starting and ending the game, handling interaction,
- // getting a random phrase, checking for a win, and removing a life from the scoreboard
+ // Game class methods start and end the game, handle interaction, pull random phrases,
+ // replace life img(s) from scoreboard, check for end game conditions, and reset game board
 
 class Game {
-  constructor () {
-    this.missed = 0;
+  constructor () { // constructor method properties
+    this.missed = 0; // used to track the number of missed guesses by the player
     this.phrase = this.createPhrases();
     this.activePhrase = null;
   }
+
   // Creates phrases and returns an array of objects to be used in game
   createPhrases() {
     const phrase = [
+      new Phrase('Engage'),
+      new Phrase('Make it so'),
       new Phrase('Live long and prosper'),
-      new Phrase('Things are only imposible until theyre not'),
-      new Phrase('Theres still much to do still so much to learn'),
-      new Phrase('Change is the essential process of all existence'),
+      new Phrase('Weird is part of the job'),
       new Phrase('To boldly go where no one has gone before')];
     return phrase;
   }
-  // Selects random phrase from phrases property, returns Phrase object to be used
+
+  // Randomly retrieves one phrase from the 'phrase' array
   getRandomPhrase() {
     return this.phrase[Math.floor(Math.random() * this.phrase.length)];
-    // const randomPhrase = this.phrases[randomIndex];
-    // const activePhrase = new Phrase(randomPhrase);
-    // return activePhrase;
   }
-  // Begins game by hiding start screen, selecting a random phrase and displaying it to user
+
+  // Begins game by hiding start screen, enabling class conditions to reset, displaying hidden random phrase to user
   startGame() {
-    document.querySelector('#overlay').style.display = 'none'; // selectElement method?
-    // Hides the start screen when clicked
+    document.querySelector('#overlay').style.display = 'none';
+    // if `win` or `lose` class conditions are met, reset gameboard
+    if (overlay.className === 'win' || overlay.className === 'lose') {
+      this.gameReset();
+    }
     this.activePhrase = this.getRandomPhrase(); // returns randomPhrase as activePhrase
-    this.activePhrase.addPhraseToDisplay();
-    // return true;
+    this.activePhrase.addPhraseToDisplay(); // adds activePhrase to display
   }
-  // Handles user interaction and functionality of app
-  // Checks to see if the button clicked matches a letter in the phrase
+
+  // Handles user interaction and functionality of app. Setting letter classes,
+  // displaying letters, disabling letters, removeLife() and checkForWin() methods
+
   handleInteraction(button) {
-    let letter = button.textContent; // Letter chosen
-    // If letter is in phrase, disable, show, and checkForWin
+    let letter = button.textContent; // sets button string value as letter chosen
+    // if letter is in phrase, show, label, disable, and checkForWin
     if (this.activePhrase.checkLetter(letter)) {
-      this.activePhrase.showMatchedLetter(letter); // Show all matching letters
-      button.classList.add("chosen"); // Label `chosen`
-      button.setAttribute("disabled", true); // Disable chosen letter
-      // If checkForWin is true, display `win`
+      this.activePhrase.showMatchedLetter(letter); // show matching letters
+      button.classList.add("chosen"); // label `chosen` class
+      button.setAttribute("disabled", true); // disable chosen letter
+      // if checkForWin() method is true, display `win`
       if (this.checkForWin()) {
         this.gameOver(true);
       }
-      // else set `wrong` class, disable letter, and removeLife
+      // else set `wrong` class, disable letter, and calls removeLife() method
       } else {
         button.classList.add("wrong");
         button.setAttribute("disabled", true);
         this.removeLife();
     }
   }
-  // Checks for winning move - returns boolean true if won, false if game wasn't won
-  // Checks if player has revealed all of the letters in the active phrase
+
+  // Checks win condition - returns a boolean, true if won, false if game lost
   checkForWin() {
     const hidden = document.querySelectorAll('.hide');
-    // return !hidden.length;
-    if (!hidden.length) {
-      return true;
-      //this.gameOver(true);
-    } else {
-      return false;
-      //this.gameOver(false);
-    }
+    return !hidden.length; // checks if there are no hidden letters left to reveal in the active phrase
   }
-  // Increases value of 'missed' property, removes a life from scoreboard
-  // One of the `liveHeart.png` images is replaced with a `lostHeart.png` image
-  // Checks if player has remaining lives and ends game if not.
+
+  // Removes a life from scoreboard, checks if player has remaining lives and ends game if not
   removeLife() {
-    const heart = document.querySelectorAll('.tries img'); // Variable to store image
-    heart[this.missed].src = 'images/lostHeart.png';
-    this.missed += 1;
-    if (this.missed === 5) { // If missed 5, gameover
+    const heart = document.querySelectorAll('.tries img'); // stores heart img
+    heart[this.missed].src = 'images/lostHeart.png'; // sets `missed` property to replace `liveHeart.png` with `lostHeart.png`
+    this.missed += 1; // increments 'missed' property, replacing images
+    // if 5 guesses missed, gameOver(false) results as loss
+    if (this.missed === 5) {
       this.gameOver(false);
     }
   }
-  // Displays game over message
-  // Applies `.start` CSS class with either `.win` or `.lose` CSS class
-  gameOver(gameWon) { // boolean of Whether or not the user won the game
-    document.querySelector('#overlay').style.display = ''; // Start screen
+
+  // Updates overlay with the outcome of the game
+  gameOver(gameWon) { // boolean of whether or not the user won the game
+    document.querySelector('#overlay').style.display = '';
     const gameOver = document.getElementById("game-over-message");
-    // Displays original start screen with outcome of game
-    if (gameWon === true) { // Updates overlay with `h1` element friendly win or loss message
+    // applies `.start` class with either `.win` or `.lose` class and displays game over message
+    if (gameWon === true) {
       overlay.className = "win";
       gameOver.innerHTML = "Great Job, You Won!";
     } else {
       overlay.className = "lose";
       gameOver.innerHTML = "Sorry, better luck next time!";
     }
-    //reset();
   }
 
-}
+  // Resets game by removing `li` elements from `phrase` div,
+  // enable onscreen buttons and update each `key` class, and resets heart images
 
-/*
+  gameReset() {
+    document.querySelector('#phrase ul').innerHTML = ''; // reset `phrase ul`
+    document.querySelectorAll('.key').forEach(key => { // reset letters `key` class
+      key.className = 'key';
+      key.disabled = false;
+    });
+    const hearts = document.querySelectorAll('.tries img');
+    hearts.forEach(heart => { // Reset all heart images
+      heart.src = 'images/liveHeart.png';
+    });
+    this.missed = 0; // Reset counter
+  }
 
-When user clicks onscreen button -
-The clicked/chosen letter must be captured.
-The clicked letter must be checked against the phrase for a match.
-If there’s a match, the letter must be displayed on screen instead of the placeholder.
-If there’s no match, the game must remove a life from the scoreboard.
-The game should check if the player has won the game by revealing all of the letters in
-  the phrase or if the game is lost because the player is out of lives.
-If the game is won or lost, a message should be displayed on screen.
-
-Create Game class methods for starting and ending the game, handling interaction,
-getting a random phrase, checking for a win, and removing a life from the scoreboard
-
-missed: Used to track the number of missed guesses by the player. The initial
-value is `0`
-
-startGame: hides start screen overlay, sets `activePhrase` property to random phrase
-calls addPhraseToDisplay() on active phrase
-
-getRandomPhrase: randomly retrieves one phrase from the 'phrases' array
-
-handleInteraction: Checks if button clicked matches letter in phrase = correct or incorrect guess
-disable selected letter's onscreen keyboard button
-if phrase does not inclue guessed letter,
-apply `wrong` class to selected letter's button and `removeLife()` is called
-for correct letter guess, `chose` class added to selected button.
-`showMatchedLetter()` is called on phrase, and call `checkForWin()`
-If player has won the game, call gameOver() method
-
-removeLife: Removes a life from the scoreboard (one of the `liveHeart.png` images
-is replaced with a `lostHeart.png` image), increments the
-`missed` property, and if the player has lost the game calls the `gameOver()` method
-
-checkForWin: Checks if player has revealed all of the letters in the active phrase
-
-gameOver: Displays final "win" or "loss" message by showing the original start screen
-overlay styled with either the `win` or `lose` CSS class
-
-gameReset: After game is completed, reset gameboard by clicking "Start Game" button.
-Loads a new game, removes all `li` elements from Prase `ul` element. Reset all heart images.
-Enable all onscreen buttons and update each to use `key` CSS class
-
-
-
-*/
+} // end `Game` class

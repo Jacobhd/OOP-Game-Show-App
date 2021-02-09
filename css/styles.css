@@ -131,7 +131,7 @@ button {
 }
 
 .chosen {
-  background: green;
+  background: #63c080;
   border-radius: 5px;
   font-size: var(--font-size-medium);
   color: #FFFFFF;
