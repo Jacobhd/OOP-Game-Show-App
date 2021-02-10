@@ -2,26 +2,30 @@
  * Project 4 - OOP Game App
  * app.js */
 
-let game; // = new Game();
+let game;
 
-// Returns new random phrase game when `Start Game` button is clicked
+// `Start Button` returns random phrase game
+
 document.querySelector('#btn__reset').addEventListener("click", () => {
   game = new Game();
   game.startGame();
 });
 
-// Listens for events from clicks in the onscreen keyboard buttons
+// Listen to clicks for the onscreen keyboard, pass to handleInteraction()
+
 document.querySelector("#qwerty").addEventListener('click', (event) => {
-  // when user clicks a letter on the screen, passes event to handleInteraction method
   if (event.target.className === "key") {
     game.handleInteraction(event.target);
   }
 });
 
-// Global listener for `keydown` events from user's physical keyboard
+/* Listen for user's physical keyboard
+   selectAll `key` class set to button string values,
+   button value = event `key` value & letter is enabled
+   pass to handleInteraction() method */
+
 document.addEventListener('keydown', event => {
-  document.querySelectorAll('.key').forEach(button => { // selects all `key` class values and associates them to button's string values
-    // if button's string value equals event's `key` value and the letter is enabled, pass to handleInteraction() method
+  document.querySelectorAll('.key').forEach(button => {
     if (button.textContent === event.key && button.disabled === false) {
       game.handleInteraction(button);
     }
