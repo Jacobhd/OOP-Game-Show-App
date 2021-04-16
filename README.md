@@ -1,5 +1,5 @@
 # OOP-Game-Show-App
-# Techdegree Project 4
+
 Browser-based letter guessing Star Trek inspired Game Show App using multiple files.
 
 When a game starts a random phrase is hidden on screen. As the user guesses letters, buttons are disabled and parts of the phrase appear or lives are lost leading to a game over.
